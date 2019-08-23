@@ -5,7 +5,7 @@ Joshua Ryland 5654548 jryl559
 Travelling Salesperson Problem
 ['/Users/Gorilla Rig/Desktop/761/A2/a2.pl'].
 */
-dsd
+
 /*Dataset to be deleted yet, only for testing */
 two_cities(RoadNetwork):-
     [
@@ -25,9 +25,15 @@ six_cities(RoadNetwork):-
         (e, [(b, 1), (d, 2)]),
         (f, [(a, 6), (c, 9), (d, 7)])
     ] = RoadNetwork.
+/* 
 
+Logic:
+Using a given road network and starting city, work out all paths to see every city once and then return to the starting city
+Return total cost of each path and the path itself.
+
+*/
 solution([StartCity], RoadNetwork, Cost, Path):-
-    
+    member(RoadNetwork[StartCity])
     
     
 
