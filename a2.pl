@@ -33,13 +33,18 @@ Return total cost of each path and the path itself.
 
 */
 solution([StartCity], RoadNetwork, Cost, Path):-
-    member(RoadNetwork[StartCity])
+    solution(StartCity, RoadNetwork, [StartCity], 0, Path, Cost)
+    member([StartCity], RoadNetwork),
+    member((Neighbour, Cost), Path).
+
     
-    
+
 
 /* DELETE THIS PURELY FOR TESTING SOLUTION SHOULD COME WHEN THIS IS CALLED
 optimalSolution(+StartCity, +RoadNetwork, -OptimalCost, -Solution) 
 return the optimal solution cost and path
+six_cities(R), member((a,K),R), member((I, Cost), K).
+the abpove query actually gets the cost
 */
 
 optimalSolution(StartCity, RoadNetwork, OptimalCost, SolutionPath) :-
