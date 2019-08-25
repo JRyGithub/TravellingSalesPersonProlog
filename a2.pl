@@ -4,6 +4,7 @@ Joshua Ryland 5654548 jryl559
 
 Travelling Salesperson Problem
 ['/Users/Gorilla Rig/Desktop/761/A2/a2.pl'].
+['/Users/loqgar/Desktop/AI/TravellingSalesPersonProlog/a2.pl'].
 */
 
 /*Dataset to be deleted yet, only for testing */
@@ -32,12 +33,28 @@ Using a given road network and starting city, work out all paths to see every ci
 Return total cost of each path and the path itself.
 
 */
-solution([StartCity], RoadNetwork, Cost, Path):-
-    solution(StartCity, RoadNetwork, [StartCity], 0, Path, Cost)
-    member([StartCity], RoadNetwork),
-    member((Neighbour, Cost), Path).
 
-    
+len([], 0).
+len([H|T], N):- len(T, X), N is X+1 .
+
+solution([StartCity], RoadNetwork, Cost, Path):-
+    solution([StartCity],RoadNetwork,[StartCity], 0,Cost,Path).
+
+solution([StartCity],RoadNetwork, Visited, CostAcc, TotalCost, Path):-
+    member((StartCity, NeighbourCities), RoadNetwork),
+    member((StopCity, Cost), NeighbourCities),
+    NewCost is CostAcc + Cost,
+	not(member(StopCity,Visited)),
+    solution([StopCity], RoadNetwork,[StopCity|Visited], NewCost, TotalCost, Path).
+
+solution([City], RoadNetwork, Visited, TotalCost ,Cost, Path):-
+    member((City,Roads), RoadNetwork),
+    member((Finish,Price), Roads),
+    reverse([Finish|Visited],Path),
+    len(Visited, Q),
+    (Q=6 -> Cost is TotalCost + Price).
+
+
 
 
 /* DELETE THIS PURELY FOR TESTING SOLUTION SHOULD COME WHEN THIS IS CALLED
