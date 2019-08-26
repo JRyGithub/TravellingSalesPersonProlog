@@ -3,11 +3,9 @@ Assignment Two
 Joshua Ryland 5654548 jryl559
 
 Travelling Salesperson Problem
-['/Users/Gorilla Rig/Desktop/761/A2/a2.pl'].
-['/Users/loqgar/Desktop/AI/TravellingSalesPersonProlog/a2.pl'].
 */
 
-/*Dataset to be deleted yet, only for testing */
+/* Commented out but needed for testing purposes.
 two_cities(RoadNetwork):-
     [
         (a, [(b,2)]),
@@ -26,6 +24,7 @@ six_cities(RoadNetwork):-
         (e, [(b, 1), (d, 2)]),
         (f, [(a, 6), (c, 9), (d, 7)])
     ] = RoadNetwork.
+    */
 /* 
 
 Logic:
@@ -37,34 +36,22 @@ Return total cost of each path and the path itself.
 len([], 0).
 len([H|T], N):- len(T, X), N is X+1 .
 
-solution([StartCity], RoadNetwork, Cost, Path):-
-    solution([StartCity],RoadNetwork,[StartCity], 0,Cost,Path).
+solution([Path], RoadNetwork, SolutionCost, SolutionPath):-
+    solution([Path],RoadNetwork,[Path], 0,SolutionCost,SolutionPath).
 
-solution([StartCity],RoadNetwork, Visited, CostAcc, TotalCost, Path):-
-    member((StartCity, NeighbourCities), RoadNetwork),
+solution([Path],RoadNetwork, Visited, CostAcc, TotalCost, SolutionPath):-
+    member((Path, NeighbourCities), RoadNetwork),
     member((StopCity, Cost), NeighbourCities),
     NewCost is CostAcc + Cost,
 	not(member(StopCity,Visited)),
-    solution([StopCity], RoadNetwork,[StopCity|Visited], NewCost, TotalCost, Path).
+    solution([StopCity], RoadNetwork,[StopCity|Visited], NewCost, TotalCost, SolutionPath).
 
-solution([City], RoadNetwork, Visited, TotalCost ,Cost, Path):-
+solution([City], RoadNetwork, Visited, TotalCost ,Cost, SolutionPath):-
     member((City,Roads), RoadNetwork),
     member((Finish,Price), Roads),
-    reverse([Finish|Visited],Path),
+    reverse([Finish|Visited],SolutionPath),
+    [First|_] = SolutionPath,
+    append(_,[Last],SolutionPath),
+    First = Last,
     len(Visited, Q),
     (Q=6 -> Cost is TotalCost + Price).
-
-
-
-
-/* DELETE THIS PURELY FOR TESTING SOLUTION SHOULD COME WHEN THIS IS CALLED
-optimalSolution(+StartCity, +RoadNetwork, -OptimalCost, -Solution) 
-return the optimal solution cost and path
-six_cities(R), member((a,K),R), member((I, Cost), K).
-the abpove query actually gets the cost
-*/
-
-optimalSolution(StartCity, RoadNetwork, OptimalCost, SolutionPath) :-
-    findall(solution(Cost, Path), solution([StartCity], RoadNetwork, Cost, Path), Solutions),
-    sort(Solutions, SortedSolutions),
-    SortedSolutions = [solution(OptimalCost, SolutionPath) | _].
