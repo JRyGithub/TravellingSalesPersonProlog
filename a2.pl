@@ -4,8 +4,7 @@ Joshua Ryland 5654548 jryl559
 
 Travelling Salesperson Problem
 */
-
-/* Commented out but needed for testing purposes.
+/*Dataset for testing
 two_cities(RoadNetwork):-
     [
         (a, [(b,2)]),
@@ -24,7 +23,7 @@ six_cities(RoadNetwork):-
         (e, [(b, 1), (d, 2)]),
         (f, [(a, 6), (c, 9), (d, 7)])
     ] = RoadNetwork.
-    */
+*/
 /* 
 
 Logic:
@@ -41,12 +40,12 @@ solution([Path], RoadNetwork, SolutionCost, SolutionPath):-
 
 solution([Path],RoadNetwork, Visited, CostAcc, TotalCost, SolutionPath):-
     member((Path, NeighbourCities), RoadNetwork),
-    member((StopCity, Cost), NeighbourCities),
-    NewCost is CostAcc + Cost,
+    member((StopCity, SolutionCost), NeighbourCities),
+    NewCost is CostAcc + SolutionCost,
 	not(member(StopCity,Visited)),
     solution([StopCity], RoadNetwork,[StopCity|Visited], NewCost, TotalCost, SolutionPath).
 
-solution([City], RoadNetwork, Visited, TotalCost ,Cost, SolutionPath):-
+solution([City], RoadNetwork, Visited, TotalCost ,SolutionCost, SolutionPath):-
     member((City,Roads), RoadNetwork),
     member((Finish,Price), Roads),
     reverse([Finish|Visited],SolutionPath),
@@ -54,4 +53,4 @@ solution([City], RoadNetwork, Visited, TotalCost ,Cost, SolutionPath):-
     append(_,[Last],SolutionPath),
     First = Last,
     len(Visited, Q),
-    (Q=6 -> Cost is TotalCost + Price).
+    (Q=6 -> SolutionCost is TotalCost + Price).
